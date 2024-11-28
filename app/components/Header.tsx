@@ -19,7 +19,7 @@ export default function Header() {
                             <Link href="/" className="text-gray-600 hover:text-gray-800 transition-colors duration-200">
                                 <Home className="w-6 h-6" />
                             </Link>
-                            <Link href="/drops" className="text-gray-600 hover:text-gray-800 transition-colors duration-200 flex items-center">
+                            <Link href="/page" className="text-gray-600 hover:text-gray-800 transition-colors duration-200 flex items-center">
                                 <Droplet className="w-5 h-5 mr-1" />
                                 Drops
                             </Link>
