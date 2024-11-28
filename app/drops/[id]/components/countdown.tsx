@@ -41,17 +41,15 @@ export default function Countdown({ targetDate }: CountdownProps) {
         return () => clearTimeout(timer)
     })
 
-    const timerComponents = Object.keys(timeLeft).map(interval => {
-        // Type guard to ensure type safety
-        const key = interval as keyof TimeLeft
-        if (!timeLeft[key]) {
+    const timerComponents = (Object.keys(timeLeft) as Array<keyof TimeLeft>).map(interval => {
+        if (!timeLeft[interval]) {
             return null
         }
 
         return (
             <span className="text-2xl font-bold" key={interval}>
-                {timeLeft[key]} {interval}{" "}
-            </span>
+            {timeLeft[interval]} {interval}{" "}
+        </span>
         )
     })
 
