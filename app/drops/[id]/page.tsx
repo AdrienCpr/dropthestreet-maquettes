@@ -1,9 +1,8 @@
-import Image from 'next/image'
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { MessageCircle, Star, Clock, Bell } from 'lucide-react'
+import { Star, Bell } from 'lucide-react'
 import ProductGallery from './components/product-gallery'
 import Countdown from './components/countdown'
 import LiveChat from './components/live-chat'
@@ -27,7 +26,7 @@ export default function DropDetailPage() {
             <Countdown targetDate={new Date('2023-12-31T23:59:59')} />
           </div>
           <Button className="w-full mb-4">
-            <Bell className="mr-2 h-4 w-4" /> Notifier à l'ouverture
+            <Bell className="mr-2 h-4 w-4" /> Notifier à l&apos;ouverture
           </Button>
           <Tabs defaultValue="description" className="mt-6">
             <TabsList>
