@@ -2,16 +2,24 @@
 
 import { useState, useEffect } from 'react'
 
+// Define a specific type for the time left object
+interface TimeLeft {
+    jours?: number
+    heures?: number
+    minutes?: number
+    secondes?: number
+}
+
 interface CountdownProps {
     targetDate: Date
 }
 
 export default function Countdown({ targetDate }: CountdownProps) {
-    const [timeLeft, setTimeLeft] = useState(calculateTimeLeft())
+    const [timeLeft, setTimeLeft] = useState<TimeLeft>({})
 
-    function calculateTimeLeft() {
+    function calculateTimeLeft(): TimeLeft {
         const difference = +targetDate - +new Date()
-        let timeLeft = {}
+        let timeLeft: TimeLeft = {}
 
         if (difference > 0) {
             timeLeft = {
@@ -34,14 +42,16 @@ export default function Countdown({ targetDate }: CountdownProps) {
     })
 
     const timerComponents = Object.keys(timeLeft).map(interval => {
-        if (!timeLeft[interval]) {
+        // Type guard to ensure type safety
+        const key = interval as keyof TimeLeft
+        if (!timeLeft[key]) {
             return null
         }
 
         return (
             <span className="text-2xl font-bold" key={interval}>
-        {timeLeft[interval]} {interval}{" "}
-      </span>
+                {timeLeft[key]} {interval}{" "}
+            </span>
         )
     })
 
@@ -51,4 +61,3 @@ export default function Countdown({ targetDate }: CountdownProps) {
         </div>
     )
 }
-
