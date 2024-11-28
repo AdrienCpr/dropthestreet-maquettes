@@ -41,17 +41,19 @@ export default function Countdown({ targetDate }: CountdownProps) {
         return () => clearTimeout(timer)
     })
 
-    const timerComponents = (Object.keys(timeLeft) as Array<keyof TimeLeft>).map(interval => {
-        if (!timeLeft[interval]) {
-            return null
-        }
+    const timerComponents = Object.keys(timeLeft)
+        .filter((interval): interval is keyof TimeLeft => interval in timeLeft)
+        .map(interval => {
+            if (!timeLeft[interval]) {
+                return null
+            }
 
-        return (
-            <span className="text-2xl font-bold" key={interval}>
-            {timeLeft[interval]} {interval}{" "}
-        </span>
-        )
-    })
+            return (
+                <span className="text-2xl font-bold" key={interval}>
+                {timeLeft[interval]} {interval}{" "}
+            </span>
+            )
+        })
 
     return (
         <div className="text-center p-4 bg-primary/10 rounded-lg">
