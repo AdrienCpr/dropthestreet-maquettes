@@ -1,5 +1,4 @@
 'use client'
-
 import { useState, useEffect } from 'react'
 
 // Define a specific type for the time left object
@@ -15,7 +14,13 @@ interface CountdownProps {
 }
 
 export default function Countdown({ targetDate }: CountdownProps) {
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>({})
+    // Initialize with a properly typed empty object
+    const [timeLeft, setTimeLeft] = useState<TimeLeft>({
+        jours: 0,
+        heures: 0,
+        minutes: 0,
+        secondes: 0
+    })
 
     function calculateTimeLeft(): TimeLeft {
         const difference = +targetDate - +new Date()
@@ -34,34 +39,31 @@ export default function Countdown({ targetDate }: CountdownProps) {
     }
 
     useEffect(() => {
-        const timer = setTimeout(() => {
+        const timer = setInterval(() => {
             setTimeLeft(calculateTimeLeft())
         }, 1000)
 
-        return () => clearTimeout(timer)
-    })
+        return () => clearInterval(timer)
+    }, [targetDate])
 
-    const timerComponents = Object.keys(timeLeft)
+    const timerComponents = (Object.keys(timeLeft) as Array<keyof TimeLeft>)
         .map(interval => {
-            // Type assertion: asserting that `interval` is a valid key of `TimeLeft`
-            const key = interval as keyof TimeLeft;
-
-            // Now TypeScript knows `key` is a valid key of TimeLeft
-            if (!timeLeft[key]) {
-                return null;
+            const value = timeLeft[interval]
+            if (!value) {
+                return null
             }
 
             return (
-                <span className="text-2xl font-bold" key={interval}>
-        {timeLeft[key]} {interval}{" "}
-      </span>
-            );
+                <span key={interval}>
+                    {value} {interval}{" "}
+                </span>
+            )
         })
-        .filter((component): component is JSX.Element => component !== null);
+        .filter((component): component is JSX.Element => component !== null)
 
     return (
-        <div className="text-center p-4 bg-primary/10 rounded-lg">
-            {timerComponents.length ? timerComponents : <span className="text-2xl font-bold">Le drop a commencé !</span>}
+        <div>
+            {timerComponents.length ? timerComponents : "Le drop a commencé !"}
         </div>
     )
 }
