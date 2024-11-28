@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import { Bell, Home, Search, User, Droplet, Zap } from 'lucide-react'
 import { Input } from '@/components/ui/input'
-import { Button } from '@/components/ui/button'
 
 export default function Header() {
     return (

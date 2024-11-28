@@ -20,7 +20,7 @@ export default function Footer() {
                     <div>
                         <h4 className="text-xl font-semibold mb-4">Légal</h4>
                         <ul className="space-y-2">
-                            <li><Link href="/terms" className="text-gray-400 hover:text-white transition-colors duration-200">Conditions générales d'utilisation</Link></li>
+                            <li><Link href="/terms" className="text-gray-400 hover:text-white transition-colors duration-200">Conditions générales d&apos;utilisation</Link></li>
                             <li><Link href="/privacy" className="text-gray-400 hover:text-white transition-colors duration-200">Politique de confidentialité</Link></li>
                             <li><Link href="/cookies" className="text-gray-400 hover:text-white transition-colors duration-200">Politique de cookies</Link></li>
                         </ul>

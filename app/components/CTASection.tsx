@@ -6,7 +6,7 @@ export default function CTASection() {
             <h2 className="text-3xl font-bold mb-4">Rejoignez la communauté Drop the Street</h2>
             <p className="mb-6">Ne manquez aucun drop exclusif et participez aux enchères en direct !</p>
             <div className="space-x-4">
-                <Button variant="secondary" size="lg">S'inscrire</Button>
+                <Button variant="secondary" size="lg">S&apos;inscrire</Button>
                 <Button variant="outline" size="lg">Se connecter</Button>
             </div>
         </div>
