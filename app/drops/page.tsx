@@ -110,7 +110,7 @@ export default function DropList() {
                         <SelectValue placeholder="Date" />
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="Aujourd'hui">Aujourd'hui</SelectItem>
+                        <SelectItem value="Aujourd'hui">Aujourd&apos;hui</SelectItem>
                         <SelectItem value="Cette semaine">Cette semaine</SelectItem>
                     </SelectContent>
                 </Select>
