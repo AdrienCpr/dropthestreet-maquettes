@@ -42,9 +42,11 @@ export default function Countdown({ targetDate }: CountdownProps) {
     })
 
     const timerComponents = Object.keys(timeLeft)
-        .filter((interval): interval is keyof TimeLeft => interval in timeLeft)
         .map(interval => {
-            const key = interval as keyof TimeLeft; // Assert the type here
+            // Type assertion: asserting that `interval` is a valid key of `TimeLeft`
+            const key = interval as keyof TimeLeft;
+
+            // Now TypeScript knows `key` is a valid key of TimeLeft
             if (!timeLeft[key]) {
                 return null;
             }
@@ -54,7 +56,8 @@ export default function Countdown({ targetDate }: CountdownProps) {
         {timeLeft[key]} {interval}{" "}
       </span>
             );
-        });
+        })
+        .filter((component): component is JSX.Element => component !== null);
 
     return (
         <div className="text-center p-4 bg-primary/10 rounded-lg">
