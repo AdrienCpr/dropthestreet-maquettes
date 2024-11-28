@@ -44,16 +44,17 @@ export default function Countdown({ targetDate }: CountdownProps) {
     const timerComponents = Object.keys(timeLeft)
         .filter((interval): interval is keyof TimeLeft => interval in timeLeft)
         .map(interval => {
-            if (!timeLeft[interval]) {
-                return null
+            const key = interval as keyof TimeLeft; // Assert the type here
+            if (!timeLeft[key]) {
+                return null;
             }
 
             return (
                 <span className="text-2xl font-bold" key={interval}>
-                {timeLeft[interval]} {interval}{" "}
-            </span>
-            )
-        })
+        {timeLeft[key]} {interval}{" "}
+      </span>
+            );
+        });
 
     return (
         <div className="text-center p-4 bg-primary/10 rounded-lg">
