@@ -78,6 +78,31 @@ export default function DropList() {
 
     const brands = Array.from(new Set(page.map(drop => drop.brand)))
 
+    const renderDropCard = (drop: Drop) => (
+        <Card key={drop.id} className="overflow-hidden">
+            <CardContent className="p-0">
+                <img src={drop.image} alt={drop.name} className="w-full h-48 object-cover" />
+                <div className="p-4">
+                    <h2 className="text-xl font-semibold mb-2">{drop.name}</h2>
+                    <p className="text-sm text-gray-600 mb-2">{drop.brand}</p>
+                    <p className="text-sm mb-2">
+                        {format(drop.dropDate, "d MMMM yyyy 'à' HH:mm", { locale: fr })}
+                    </p>
+                    {drop.isVip && (
+                        <Badge variant="secondary" className="mb-2">VIP</Badge>
+                    )}
+                </div>
+            </CardContent>
+            <Separator />
+            <CardFooter className="flex justify-between p-4">
+                <Button onClick={() => window.location.href = `/drops/${drop.id}`}>Participer</Button>
+                <Button variant="outline">
+                    <CalendarIcon className="mr-2 h-4 w-4" /> Ajouter
+                </Button>
+            </CardFooter>
+        </Card>
+    )
+
     return (
         <div className="container mx-auto px-4 py-8">
             <h1 className="text-3xl font-bold mb-6">Drops à venir</h1>
@@ -128,58 +153,14 @@ export default function DropList() {
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {filteredDrops.map(drop => (
-                    <Card key={drop.id} className="overflow-hidden">
-                        <CardContent className="p-0">
-                            <img src={drop.image} alt={drop.name} className="w-full h-48 object-cover" />
-                            <div className="p-4">
-                                <h2 className="text-xl font-semibold mb-2">{drop.name}</h2>
-                                <p className="text-sm text-gray-600 mb-2">{drop.brand}</p>
-                                <p className="text-sm mb-2">
-                                    {format(drop.dropDate, "d MMMM yyyy 'à' HH:mm", { locale: fr })}
-                                </p>
-                                {drop.isVip && (
-                                    <Badge variant="secondary" className="mb-2">VIP</Badge>
-                                )}
-                            </div>
-                        </CardContent>
-                        <Separator />
-                        <CardFooter className="flex justify-between p-4">
-                            <Button>Participer</Button>
-                            <Button variant="outline">
-                                <CalendarIcon className="mr-2 h-4 w-4" /> Ajouter
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                ))}
+                {filteredDrops.map(renderDropCard)}
             </div>
 
             <Separator className="my-8" />
 
             <h2 className="text-2xl font-bold mb-6">Drops VIP</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {page.filter(drop => drop.isVip).map(drop => (
-                    <Card key={drop.id} className="overflow-hidden">
-                        <CardContent className="p-0">
-                            <img src={drop.image} alt={drop.name} className="w-full h-48 object-cover" />
-                            <div className="p-4">
-                                <h2 className="text-xl font-semibold mb-2">{drop.name}</h2>
-                                <p className="text-sm text-gray-600 mb-2">{drop.brand}</p>
-                                <p className="text-sm mb-2">
-                                    {format(drop.dropDate, "d MMMM yyyy 'à' HH:mm", { locale: fr })}
-                                </p>
-                                <Badge variant="secondary" className="mb-2">VIP</Badge>
-                            </div>
-                        </CardContent>
-                        <Separator />
-                        <CardFooter className="flex justify-between p-4">
-                            <Button>Participer</Button>
-                            <Button variant="outline">
-                                <CalendarIcon className="mr-2 h-4 w-4" /> Ajouter
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                ))}
+                {page.filter(drop => drop.isVip).map(renderDropCard)}
             </div>
         </div>
     )
@@ -197,4 +178,3 @@ function isThisWeek(date: Date, options: { weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 |
     const endOfWeek = new Date(today.setDate(today.getDate() - today.getDay() + 6 + (options.weekStartsOn || 0)))
     return date >= startOfWeek && date <= endOfWeek
 }
-
