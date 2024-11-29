@@ -2,16 +2,24 @@
 
 import { useState, useEffect } from 'react'
 
+// Define the TimeLeft interface
+interface TimeLeft {
+  jours?: number
+  heures?: number
+  minutes?: number
+  secondes?: number
+}
+
 interface CountdownProps {
   targetDate: Date
 }
 
 export default function Countdown({ targetDate }: CountdownProps) {
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft())
+  const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft())
 
-  function calculateTimeLeft() {
+  function calculateTimeLeft(): TimeLeft {
     const difference = +targetDate - +new Date()
-    let timeLeft = {}
+    let timeLeft: TimeLeft = {}
 
     if (difference > 0) {
       timeLeft = {
@@ -26,29 +34,32 @@ export default function Countdown({ targetDate }: CountdownProps) {
   }
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timer = setInterval(() => {
       setTimeLeft(calculateTimeLeft())
     }, 1000)
 
-    return () => clearTimeout(timer)
-  })
+    return () => clearInterval(timer)
+  }, [targetDate])
 
-  const timerComponents = Object.keys(timeLeft).map(interval => {
-    if (!timeLeft[interval]) {
-      return null
-    }
+  const timerComponents = (Object.keys(timeLeft) as Array<keyof TimeLeft>)
+      .map(interval => {
+        // Type-safe way to check if the value is undefined, 0, or null
+        const value = timeLeft[interval as keyof TimeLeft]
+        if (value === undefined || value === 0 || value === null) {
+          return null
+        }
 
-    return (
-      <span className="text-2xl font-bold" key={interval}>
-        {timeLeft[interval]} {interval}{" "}
-      </span>
-    )
-  })
+        return (
+            <span className="text-2xl font-bold" key={interval}>
+          {value} {interval}{" "}
+        </span>
+        )
+      })
+      .filter((component): component is JSX.Element => component !== null)
 
   return (
-    <div className="text-center p-4 bg-primary/10 rounded-lg">
-      {timerComponents.length ? timerComponents : <span className="text-2xl font-bold">Le drop a commencé !</span>}
-    </div>
+      <div className="text-center p-4 bg-primary/10 rounded-lg">
+        {timerComponents.length ? timerComponents : <span className="text-2xl font-bold">Le drop a commencé !</span>}
+      </div>
   )
 }
-
