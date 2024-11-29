@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import * as RechartsPrimitive from "recharts"
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   NameType,
   Payload,

@@ -30,21 +30,28 @@ import { Bar, BarChart, Line, LineChart, Pie, PieChart, ResponsiveContainer, XAx
 import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart"
 
 export default function SellerDashboard() {
+    enum ProductStatus {
+        Pending = 'pending',
+        Active = 'active',
+        Sold = 'sold'
+    }
+
     const [products] = useState([
-        { id: 1, name: "Sneakers X", status: "active", price: 150 },
-        { id: 2, name: "Hoodie Y", status: "pending", price: 80 },
-        { id: 3, name: "T-shirt Z", status: "sold", price: 35 },
+        { id: 1, name: "Sneakers X", status: ProductStatus.Active, price: 150 },
+        { id: 2, name: "Hoodie Y", status: ProductStatus.Pending, price: 80 },
+        { id: 3, name: "T-shirt Z", status: ProductStatus.Sold, price: 35 },
     ])
 
     const [isAddProductOpen, setIsAddProductOpen] = useState(false)
 
-    const getStatusIcon = (status) => {
+
+    const getStatusIcon = (status: ProductStatus) => {
         switch (status) {
-            case "pending":
+            case ProductStatus.Pending:
                 return <Clock className="h-4 w-4 text-yellow-500" />
-            case "active":
+            case ProductStatus.Active:
                 return <Package className="h-4 w-4 text-green-500" />
-            case "sold":
+            case ProductStatus.Sold:
                 return <CheckCircle className="h-4 w-4 text-blue-500" />
             default:
                 return null
