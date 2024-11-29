@@ -116,7 +116,7 @@ export default function CheckoutPage() {
                                     </div>
                                     <Button variant="destructive" size="icon" onClick={() => removeProduct(product.id)}>
                                         <Trash2 className="h-4 w-4" />
-                                        <span className="sr-only">Supprimer l'article</span>
+                                        <span className="sr-only">Supprimer l&apos;article</span>
                                     </Button>
                                 </div>
                             ))}
@@ -138,7 +138,7 @@ export default function CheckoutPage() {
                                         </div>
                                         <div className="flex gap-4">
                                             <div className="flex-1">
-                                                <Label htmlFor="expiry">Date d'expiration</Label>
+                                                <Label htmlFor="expiry">Date d&apos;expiration</Label>
                                                 <Input id="expiry" placeholder="MM/AA" />
                                             </div>
                                             <div className="flex-1">

@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/select"
 import { Badge } from "@/components/ui/badge"
 import { Separator } from "@/components/ui/separator"
+import Image from "next/image";
 
 // Types pour nos données
 type Drop = {
@@ -81,7 +82,7 @@ export default function DropList() {
     const renderDropCard = (drop: Drop) => (
         <Card key={drop.id} className="overflow-hidden">
             <CardContent className="p-0">
-                <img src={drop.image} alt={drop.name} className="w-full h-48 object-cover" />
+                <Image src={drop.image} alt={drop.name} className="w-full h-48 object-cover" />
                 <div className="p-4">
                     <h2 className="text-xl font-semibold mb-2">{drop.name}</h2>
                     <p className="text-sm text-gray-600 mb-2">{drop.brand}</p>
