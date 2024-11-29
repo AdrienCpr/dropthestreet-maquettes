@@ -48,14 +48,13 @@ export default function Countdown({ targetDate }: CountdownProps) {
 
     const timerComponents = (Object.keys(timeLeft) as Array<keyof TimeLeft>)
         .map(interval => {
-            const value = timeLeft[interval as keyof TimeLeft]
-
+            const value = timeLeft[interval]
             if (!value) {
                 return null
             }
 
             return (
-                <span className="text-2xl font-bold" key={interval}>
+                <span key={interval}>
                     {value} {interval}{" "}
                 </span>
             )
