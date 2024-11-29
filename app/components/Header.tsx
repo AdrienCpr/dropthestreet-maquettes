@@ -47,7 +47,7 @@ export default function Header() {
                                 <Heart className="w-6 h-6" />
                             </Link>
                             <Link
-                                href="/panier"
+                                href="/cart"
                                 className="text-gray-600 hover:text-gray-800 transition-colors duration-200"
                             >
                                 <ShoppingCart  className="w-6 h-6" />
