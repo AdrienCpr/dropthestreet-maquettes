@@ -1,7 +1,8 @@
 'use client'
+
 import { useState, useEffect } from 'react'
 
-// Define a specific type for the time left object
+// Define the TimeLeft interface
 interface TimeLeft {
     jours?: number
     heures?: number
@@ -14,13 +15,7 @@ interface CountdownProps {
 }
 
 export default function Countdown({ targetDate }: CountdownProps) {
-    // Initialize with a properly typed empty object
-    const [timeLeft, setTimeLeft] = useState<TimeLeft>({
-        jours: 0,
-        heures: 0,
-        minutes: 0,
-        secondes: 0
-    })
+    const [timeLeft, setTimeLeft] = useState<TimeLeft>(calculateTimeLeft())
 
     function calculateTimeLeft(): TimeLeft {
         const difference = +targetDate - +new Date()
@@ -48,22 +43,23 @@ export default function Countdown({ targetDate }: CountdownProps) {
 
     const timerComponents = (Object.keys(timeLeft) as Array<keyof TimeLeft>)
         .map(interval => {
-            const value = timeLeft[interval]
-            if (!value) {
+            // Type-safe way to check if the value is undefined, 0, or null
+            const value = timeLeft[interval as keyof TimeLeft]
+            if (value === undefined || value === 0 || value === null) {
                 return null
             }
 
             return (
-                <span key={interval}>
-                    {value} {interval}{" "}
-                </span>
+                <span className="text-2xl font-bold" key={interval}>
+          {value} {interval}{" "}
+        </span>
             )
         })
         .filter((component): component is JSX.Element => component !== null)
 
     return (
-        <div>
-            {timerComponents.length ? timerComponents : "Le drop a commencé !"}
+        <div className="text-center p-4 bg-primary/10 rounded-lg">
+            {timerComponents.length ? timerComponents : <span className="text-2xl font-bold">Le drop a commencé !</span>}
         </div>
     )
 }
