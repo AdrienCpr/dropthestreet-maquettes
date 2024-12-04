@@ -1,335 +1,197 @@
-"use client"
-
-import { useState } from "react"
-import { Plus, Edit2, Trash2, Package, Clock, CheckCircle } from 'lucide-react'
-import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import {
-    Table,
-    TableBody,
-    TableCell,
-    TableHead,
-    TableHeader,
-    TableRow,
-} from "@/components/ui/table"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/components/ui/dialog"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Bar, BarChart, Line, LineChart, Pie, PieChart, ResponsiveContainer, XAxis, YAxis, Tooltip, Legend } from "recharts"
-import { ChartContainer, ChartTooltipContent } from "@/components/ui/chart"
+import { Overview } from "./components/overview"
+import { RecentSales } from "./components/recent-sales"
+import { CalendarDateRangePicker } from "./components/date-range-picker"
+import { Button } from "@/components/ui/button"
+import { Package, ShoppingCart, TrendingUp, Users } from 'lucide-react'
+import { Eye, Gavel, Bell, AlertTriangle, CheckCircle } from 'lucide-react'
 
-export default function SellerDashboard() {
-    enum ProductStatus {
-        Pending = 'pending',
-        Active = 'active',
-        Sold = 'sold'
-    }
-
-    const [products] = useState([
-        { id: 1, name: "Sneakers X", status: ProductStatus.Active, price: 150 },
-        { id: 2, name: "Hoodie Y", status: ProductStatus.Pending, price: 80 },
-        { id: 3, name: "T-shirt Z", status: ProductStatus.Sold, price: 35 },
-    ])
-
-    const [isAddProductOpen, setIsAddProductOpen] = useState(false)
-
-
-    const getStatusIcon = (status: ProductStatus) => {
-        switch (status) {
-            case ProductStatus.Pending:
-                return <Clock className="h-4 w-4 text-yellow-500" />
-            case ProductStatus.Active:
-                return <Package className="h-4 w-4 text-green-500" />
-            case ProductStatus.Sold:
-                return <CheckCircle className="h-4 w-4 text-blue-500" />
-            default:
-                return null
-        }
-    }
-
-    // Données factices pour les graphiques
-    const salesData = [
-        { month: "Jan", sales: 20 },
-        { month: "Feb", sales: 35 },
-        { month: "Mar", sales: 28 },
-        { month: "Apr", sales: 45 },
-        { month: "May", sales: 50 },
-        { month: "Jun", sales: 60 },
-    ]
-
-    const productTypeData = [
-        { name: "Sneakers", value: 40 },
-        { name: "T-shirts", value: 30 },
-        { name: "Hoodies", value: 20 },
-        { name: "Accessories", value: 10 },
-    ]
-
-    const brandData = [
-        { name: "Nike", value: 35 },
-        { name: "Adidas", value: 25 },
-        { name: "Supreme", value: 20 },
-        { name: "Off-White", value: 15 },
-        { name: "Others", value: 5 },
-    ]
-
-    const revenueData = [
-        { month: "Jan", revenue: 3000 },
-        { month: "Feb", revenue: 5250 },
-        { month: "Mar", revenue: 4200 },
-        { month: "Apr", revenue: 6750 },
-        { month: "May", revenue: 7500 },
-        { month: "Jun", revenue: 9000 },
-    ]
-
+export default function DashboardPage() {
     return (
-        <div className="container mx-auto p-6">
-            <h1 className="text-3xl font-bold mb-6">Tableau de bord du vendeur</h1>
-
-            <Tabs defaultValue="products" className="w-full">
-                <TabsList className="grid w-full grid-cols-2">
-                    <TabsTrigger value="products">Vos produits en vente</TabsTrigger>
-                    <TabsTrigger value="statistics">Statistiques</TabsTrigger>
-                </TabsList>
-                <TabsContent value="products">
-                    <Card className="mt-6">
-                        <CardHeader>
-                            <CardTitle>Vos produits en vente</CardTitle>
-                        </CardHeader>
-                        <CardContent>
-                            <Table>
-                                <TableHeader>
-                                    <TableRow>
-                                        <TableHead>Nom du produit</TableHead>
-                                        <TableHead>Statut</TableHead>
-                                        <TableHead>Prix</TableHead>
-                                        <TableHead>Actions</TableHead>
-                                    </TableRow>
-                                </TableHeader>
-                                <TableBody>
-                                    {products.map((product) => (
-                                        <TableRow key={product.id}>
-                                            <TableCell>{product.name}</TableCell>
-                                            <TableCell className="flex items-center gap-2">
-                                                {getStatusIcon(product.status)}
-                                                {product.status.charAt(0).toUpperCase() + product.status.slice(1)}
-                                            </TableCell>
-                                            <TableCell>{product.price} €</TableCell>
-                                            <TableCell>
-                                                <div className="flex gap-2">
-                                                    <Button variant="outline" size="icon">
-                                                        <Edit2 className="h-4 w-4" />
-                                                    </Button>
-                                                    <Button variant="outline" size="icon">
-                                                        <Trash2 className="h-4 w-4" />
-                                                    </Button>
-                                                </div>
-                                            </TableCell>
-                                        </TableRow>
-                                    ))}
-                                </TableBody>
-                            </Table>
-                        </CardContent>
-                    </Card>
-                    <div className="mt-6">
-                        <Dialog open={isAddProductOpen} onOpenChange={setIsAddProductOpen}>
-                            <DialogTrigger asChild>
-                                <Button>
-                                    <Plus className="mr-2 h-4 w-4" /> Ajouter un nouveau produit
-                                </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px]">
-                                <DialogHeader>
-                                    <DialogTitle>Ajouter un nouveau produit</DialogTitle>
-                                    <DialogDescription>
-                                        Remplissez les détails de votre nouveau produit ici. Cliquez sur sauvegarder quand vous avez terminé.
-                                    </DialogDescription>
-                                </DialogHeader>
-                                <form className="grid gap-4 py-4">
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="name" className="text-right">
-                                            Nom
-                                        </Label>
-                                        <Input id="name" className="col-span-3" />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="description" className="text-right">
-                                            Description
-                                        </Label>
-                                        <Textarea id="description" className="col-span-3" />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="price" className="text-right">
-                                            Prix minimum
-                                        </Label>
-                                        <Input id="price" type="number" className="col-span-3" />
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="category" className="text-right">
-                                            Catégorie
-                                        </Label>
-                                        <Select>
-                                            <SelectTrigger className="col-span-3">
-                                                <SelectValue placeholder="Sélectionnez une catégorie" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="sneakers">Sneakers</SelectItem>
-                                                <SelectItem value="tshirts">T-shirts</SelectItem>
-                                                <SelectItem value="hoodies">Hoodies</SelectItem>
-                                                <SelectItem value="accessories">Accessoires</SelectItem>
-                                            </SelectContent>
-                                        </Select>
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label className="text-right">Format</Label>
-                                        <RadioGroup defaultValue="drop" className="col-span-3">
-                                            <div className="flex items-center space-x-2">
-                                                <RadioGroupItem value="drop" id="drop" />
-                                                <Label htmlFor="drop">Drop</Label>
-                                            </div>
-                                            <div className="flex items-center space-x-2">
-                                                <RadioGroupItem value="auction" id="auction" />
-                                                <Label htmlFor="auction">Enchère</Label>
-                                            </div>
-                                        </RadioGroup>
-                                    </div>
-                                    <div className="grid grid-cols-4 items-center gap-4">
-                                        <Label htmlFor="photos" className="text-right">
-                                            Photos
-                                        </Label>
-                                        <Input id="photos" type="file" multiple className="col-span-3" />
-                                    </div>
-                                </form>
-                                <div className="flex justify-end">
-                                    <Button type="submit">Sauvegarder</Button>
-                                </div>
-                            </DialogContent>
-                        </Dialog>
+        <>
+            <div className="md:hidden">
+                <img
+                    src="/examples/dashboard-light.png"
+                    width={1280}
+                    height={866}
+                    alt="Dashboard"
+                    className="block dark:hidden"
+                />
+                <img
+                    src="/examples/dashboard-dark.png"
+                    width={1280}
+                    height={866}
+                    alt="Dashboard"
+                    className="hidden dark:block"
+                />
+            </div>
+            <div className="hidden flex-col md:flex">
+                <div className="flex-1 space-y-4 p-8 pt-6">
+                    <div className="flex items-center justify-between space-y-2">
+                        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+                        <div className="flex items-center space-x-2">
+                            <CalendarDateRangePicker />
+                            <Button>Télécharger</Button>
+                        </div>
                     </div>
-                </TabsContent>
-                <TabsContent value="statistics">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Quantité des articles vendus</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ChartContainer config={{
-                                    sales: {
-                                        label: "Ventes",
-                                        color: "hsl(var(--chart-1))",
-                                    },
-                                }} className="h-[300px]">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <BarChart data={salesData}>
-                                            <XAxis dataKey="month" />
-                                            <YAxis />
-                                            <Tooltip content={<ChartTooltipContent />} />
-                                            <Bar dataKey="sales" fill="var(--color-sales)" />
-                                        </BarChart>
-                                    </ResponsiveContainer>
-                                </ChartContainer>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Types des articles vendus</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ChartContainer config={{
-                                    value: {
-                                        label: "Quantité",
-                                        color: "hsl(var(--chart-2))",
-                                    },
-                                }} className="h-[300px]">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <PieChart>
-                                            <Pie
-                                                data={productTypeData}
-                                                dataKey="value"
-                                                nameKey="name"
-                                                cx="50%"
-                                                cy="50%"
-                                                outerRadius={80}
-                                                fill="var(--color-value)"
-                                                label
-                                            />
-                                            <Tooltip content={<ChartTooltipContent />} />
-                                            <Legend />
-                                        </PieChart>
-                                    </ResponsiveContainer>
-                                </ChartContainer>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Marques des articles vendus</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ChartContainer config={{
-                                    value: {
-                                        label: "Quantité",
-                                        color: "hsl(var(--chart-3))",
-                                    },
-                                }} className="h-[300px]">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <PieChart>
-                                            <Pie
-                                                data={brandData}
-                                                dataKey="value"
-                                                nameKey="name"
-                                                cx="50%"
-                                                cy="50%"
-                                                outerRadius={80}
-                                                fill="var(--color-value)"
-                                                label
-                                            />
-                                            <Tooltip content={<ChartTooltipContent />} />
-                                            <Legend />
-                                        </PieChart>
-                                    </ResponsiveContainer>
-                                </ChartContainer>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Revenus</CardTitle>
-                            </CardHeader>
-                            <CardContent>
-                                <ChartContainer config={{
-                                    revenue: {
-                                        label: "Revenus",
-                                        color: "hsl(var(--chart-4))",
-                                    },
-                                }} className="h-[300px]">
-                                    <ResponsiveContainer width="100%" height="100%">
-                                        <LineChart data={revenueData}>
-                                            <XAxis dataKey="month" />
-                                            <YAxis />
-                                            <Tooltip content={<ChartTooltipContent />} />
-                                            <Line type="monotone" dataKey="revenue" stroke="var(--color-revenue)" />
-                                        </LineChart>
-                                    </ResponsiveContainer>
-                                </ChartContainer>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </TabsContent>
-            </Tabs>
-        </div>
+                    <Tabs defaultValue="overview" className="space-y-4">
+                        <TabsList>
+                            <TabsTrigger value="overview">Vue d&apos;ensemble</TabsTrigger>
+                            <TabsTrigger value="analytics">Analytiques</TabsTrigger>
+                            <TabsTrigger value="reports">Rapports</TabsTrigger>
+                            <TabsTrigger value="notifications">Notifications</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="overview" className="space-y-4">
+                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">
+                                            Ventes Totales
+                                        </CardTitle>
+                                        <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">€45,231.89</div>
+                                        <p className="text-xs text-muted-foreground">
+                                            +20.1% par rapport au mois dernier
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">
+                                            Produits Actifs
+                                        </CardTitle>
+                                        <Package className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">+573</div>
+                                        <p className="text-xs text-muted-foreground">
+                                            +201 depuis la dernière heure
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">Enchères Actives</CardTitle>
+                                        <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">+12,234</div>
+                                        <p className="text-xs text-muted-foreground">
+                                            +19% par rapport à la semaine dernière
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">
+                                            Nouveaux Clients
+                                        </CardTitle>
+                                        <Users className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">+573</div>
+                                        <p className="text-xs text-muted-foreground">
+                                            +201 depuis le dernier mois
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+                                <Card className="col-span-4">
+                                    <CardHeader>
+                                        <CardTitle>Aperçu</CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="pl-2">
+                                        <Overview />
+                                    </CardContent>
+                                </Card>
+                                <Card className="col-span-3">
+                                    <CardHeader>
+                                        <CardTitle>Ventes Récentes</CardTitle>
+                                        <CardContent>
+                                            <RecentSales />
+                                        </CardContent>
+                                    </CardHeader>
+                                </Card>
+                            </div>
+                        </TabsContent>
+                        <TabsContent value="analytics" className="space-y-4">
+                            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">
+                                            Vues Totales
+                                        </CardTitle>
+                                        <Eye className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">246,889</div>
+                                        <p className="text-xs text-muted-foreground">
+                                            +20.1% par rapport au mois dernier
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                                <Card>
+                                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                                        <CardTitle className="text-sm font-medium">
+                                            Enchères Placées
+                                        </CardTitle>
+                                        <Gavel className="h-4 w-4 text-muted-foreground" />
+                                    </CardHeader>
+                                    <CardContent>
+                                        <div className="text-2xl font-bold">12,234</div>
+                                        <p className="text-xs text-muted-foreground">
+                                            +19% par rapport à la semaine dernière
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </TabsContent>
+                        <TabsContent value="reports" className="space-y-4">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Rapports Disponibles</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <ul className="list-disc pl-5">
+                                        <li>Rapport de ventes mensuel</li>
+                                        <li>Analyse des performances des produits</li>
+                                        <li>Rapport d&apos;activité des enchères</li>
+                                        <li>Rapport de satisfaction client</li>
+                                    </ul>
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+                        <TabsContent value="notifications" className="space-y-4">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Notifications Récentes</CardTitle>
+                                </CardHeader>
+                                <CardContent>
+                                    <ul className="space-y-2">
+                                        <li className="flex items-center">
+                                            <Bell className="mr-2 h-4 w-4 text-blue-500" />
+                                            <span>Nouvelle enchère placée sur Sneakers Edition Limitée</span>
+                                        </li>
+                                        <li className="flex items-center">
+                                            <AlertTriangle className="mr-2 h-4 w-4 text-yellow-500" />
+                                            <span>Stock faible pour T-shirt Graphique Urbain</span>
+                                        </li>
+                                        <li className="flex items-center">
+                                            <CheckCircle className="mr-2 h-4 w-4 text-green-500" />
+                                            <span>Vente réussie : Casquette Streetwear Premium</span>
+                                        </li>
+                                    </ul>
+                                </CardContent>
+                            </Card>
+                        </TabsContent>
+                    </Tabs>
+                </div>
+            </div>
+        </>
     )
 }
 

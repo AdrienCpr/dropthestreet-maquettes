@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { FaGoogle, FaFacebook } from 'react-icons/fa'
+import { FaGoogle } from 'react-icons/fa'
 import {useState} from "react";
 
 export default function AuthPage() {
@@ -70,10 +70,6 @@ export default function AuthPage() {
                             <Button variant="outline" className="w-full">
                                 <FaGoogle className="mr-2 h-4 w-4" />
                                 Google
-                            </Button>
-                            <Button variant="outline" className="w-full">
-                                <FaFacebook className="mr-2 h-4 w-4" />
-                                Facebook
                             </Button>
                         </div>
                     </div>
